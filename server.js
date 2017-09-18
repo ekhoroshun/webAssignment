@@ -26,15 +26,11 @@ app.get('/about', function(req, res) {
 });
 
 
-//var port = process.env.port || 8080;
-var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
-var server_host = process.env.YOUR_HOST || '0.0.0.0';
+var port = process.env.port || 8080;
 
-//app.listen(port, function () {
-  //console.log('Express http server listening on ' + port)
-  //console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-//})
 
-server.listen(server_port, server_host, function() {
-    console.log('Listening on port %d', server_port);
-});
+
+app.listen(port, function () {
+  console.log('Express http server listening on ' + port)
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+})
