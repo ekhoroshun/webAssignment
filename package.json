@@ -1,0 +1,22 @@
+{
+  "name": "assignment2final",
+  "version": "1.0.0",
+  "description": "def",
+  "main": "server.js",
+  "scripts": {
+    "test": "def",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git"
+  },
+  "keywords": [
+    "def"
+  ],
+  "author": "elena khoroshun",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}
