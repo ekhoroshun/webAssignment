@@ -6,7 +6,7 @@
 *	
 *		Name: elena khoroshun	Student	ID:	101908168	Date:	18 september 2017
 *
-*		Online	(Heroku)	Link:	https://calm-dawn-61855.herokuapp.com/
+*		Online	(Heroku)	Link:	https://lit-retreat-28570.herokuapp.com/
 *
 ********************************************************************************/	
 
@@ -29,5 +29,6 @@ app.get('/about', function(req, res) {
 var port = process.env.port || 8080;
 
 app.listen(port, function () {
-  console.log('Express http server listening on ' + port)
+  //console.log('Express http server listening on ' + port)
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 })
