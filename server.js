@@ -11,26 +11,32 @@
 ********************************************************************************/	
 
 var express = require('express');
+
 var app = express();
+var http = require('http');
+var url = require('url');
+var HTTP_PORT = process.env.PORT || 8080;
+
 var path = require('path');
 
-app.use(express.static('public'));
+app.use(express.static("public"));
+//app.use('public', express.static(__dirname + 'public'));
+// call this function after the http server starts listening for requests
 
+function onHttpStart() {
+ console.log("Express http server listening on: " + HTTP_PORT);
+}
+// setup a 'route' to listen on the default url path (http://localhost)
+app.get("/", function(req, res){
+res.sendFile(path.join(__dirname + '/home.html'));
+//res.render('home');
+  });
 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/views/home.html'));
+// setup another route to listen on /about
+app.get("/about", function(req, res){
+ //res.render('about');
+ res.sendFile(path.join(__dirname + '/about.html'));
 });
 
-app.get('/about', function(req, res) {
-    res.sendFile(path.join(__dirname + '/views/about.html'));
-});
-
-
-var port = process.env.port || 8080;
-
-
-
-app.listen(port, function () {
-  console.log('Express http server listening on ' + port)
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-})
+// setup http server to listen on HTTP_PORT
+app.listen(HTTP_PORT, onHttpStart);
