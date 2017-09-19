@@ -36,7 +36,7 @@ app.listen(process.env.PORT || 8080, function(){
     console.log('listening on', app.port);
 });
 
-/*function onHttpStart() {
+function onHttpStart() {
 console.log("Express http server listening on: " + HTTP_PORT);
-}*/
+}
 
