@@ -25,11 +25,6 @@ app.get('/about', function(req, res) {
 res.sendFile(path.join(__dirname + '/views/about.html'));
 });
 
-
-
-
-
-
 /*app.listen(port, function () {
 console.log('Express http server listening on ' + port)
 console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
@@ -41,9 +36,7 @@ app.listen(process.env.PORT || 8080, function(){
     console.log('listening on', app.port);
 });
 
-
-
-function onHttpStart() {
+/*function onHttpStart() {
 console.log("Express http server listening on: " + HTTP_PORT);
-}
+}*/
 
