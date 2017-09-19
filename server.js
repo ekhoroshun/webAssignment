@@ -9,34 +9,33 @@
 *		Online	(Heroku)	Link:	https://lit-retreat-28570.herokuapp.com/
 *
 ********************************************************************************/	
-
 var express = require('express');
-
 var app = express();
-var http = require('http');
-var url = require('url');
-var HTTP_PORT = process.env.PORT || 8080;
-
 var path = require('path');
+var http = require('http');
 
-app.use(express.static("public"));
-//app.use('public', express.static(__dirname + 'public'));
-// call this function after the http server starts listening for requests
+app.use(express.static('public'));
 
-function onHttpStart() {
- console.log("Express http server listening on: " + HTTP_PORT);
-}
-// setup a 'route' to listen on the default url path (http://localhost)
-app.get("/", function(req, res){
-res.sendFile(path.join(__dirname + '/home.html'));
-//res.render('home');
-  });
 
-// setup another route to listen on /about
-app.get("/about", function(req, res){
- //res.render('about');
- res.sendFile(path.join(__dirname + '/about.html'));
+app.get('/', function(req, res) {
+res.sendFile(path.join(__dirname + '/views/home.html'));
 });
 
-// setup http server to listen on HTTP_PORT
+app.get('/about', function(req, res) {
+res.sendFile(path.join(__dirname + '/views/about.html'));
+});
+
+
+var HTTP_PORT = process.env.port || 8080;
+
+
+
+/*app.listen(port, function () {
+console.log('Express http server listening on ' + port)
+console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+})*/
+
+function onHttpStart() {
+console.log("Express http server listening on: " + HTTP_PORT);
+}
 app.listen(HTTP_PORT, onHttpStart);
