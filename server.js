@@ -30,9 +30,9 @@ console.log('Express http server listening on ' + port)
 console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 })*/
 
-var HTTP_PORT = process.env.port || 8080;
+var HTTP_PORT = process.env.port || 3000;
 
-app.listen(process.env.PORT || 8080, function(){
+app.listen(process.env.PORT || 3000, function(){
     console.log('listening on', app.port);
 });
 
