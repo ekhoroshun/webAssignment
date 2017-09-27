@@ -9,7 +9,7 @@
 *		Online	(Heroku)	Link:	https://lit-retreat-28570.herokuapp.com/
 *
 ********************************************************************************/	
-var dataService = require('/data-service.js');
+var dataService = require('./data-service.js');
 
 var express = require('express');
 var app = express();
