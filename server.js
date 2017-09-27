@@ -28,6 +28,7 @@ res.sendFile(path.join(__dirname + '/views/about.html'));
 });
 
 app.get('/employees', function(req, res){
+    console.log(req.query);
 res.sendFile(path.join(__dirname + '/data/employees.json'));
 });
 
