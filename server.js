@@ -29,11 +29,29 @@ res.sendFile(path.join(__dirname + '/views/about.html'));
 
 app.get('/employees', function(req, res){
     console.log(req.query);
+
+    if(req.query.status) {
+        
+        console.log("Filter data by Status")
+        
+        } else if(req.query.department) {
+        
+        console.log("Filter data by Department")
+        
+        } else if(req.query.manager) {
+        
+        console.log("Filter data by Manager")
+        
+        } else {
+        
+        console.log("Show all")
+        
+        }
 res.sendFile(path.join(__dirname + '/data/employees.json'));
 });
 
-app.get('/employees', function(req, res){
-    res.sendFile(path.join(__dirname + '/data/employees.json'));
+app.get('/employee/:value', function(req, res){
+    res.sendFile(path.join(__dirname + '/data/employee.json'));
     });
 
 /*app.listen(port, function () {
