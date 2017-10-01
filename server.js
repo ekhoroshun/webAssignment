@@ -18,41 +18,92 @@ var http = require('http');
 
 app.use(express.static('public'));
 
-
 app.get('/', function(req, res) {
-res.sendFile(path.join(__dirname + '/views/home.html'));
+    res.sendFile(path.join(__dirname + '/views/home.html'));
 });
 
 app.get('/about', function(req, res) {
-res.sendFile(path.join(__dirname + '/views/about.html'));
+    res.sendFile(path.join(__dirname + '/views/about.html'));
 });
 
-app.get('/employees', function(req, res){
+app.get('/employees', function(req, res) {
+
+    dataServer.initialize().then( (resolve) => {
+        
+        console.log(resolve);
+
+        if(req.query.status) {
+
+            console.log("Filter data by Status")
+
+            /*
+            dataServer.getEmployeesByStatus(req.query.status).then( (resolve) => {
+                console.log(resolve)
+                res.json(resolve)
+            }, (reject) => {
+                console.log(reject)
+            } )
+            */
+
+            res.send(200);
+
+        } else if(req.query.department) {
+
+            console.log("Filter data by Department")
+
+            res.send(200);
+
+        } else if(req.query.manager) {
+
+            console.log("Filter data by Manager")
+
+            res.send(200);
+
+        } else {
+
+            var data = dataServer.getAllEmployees();
+            console.log("Show all", data)
+            res.send(data)
+
+        }
+
+    }, (reject) => {
+
+        res.send(500);
+
+    } );
+    /*
     console.log(req.query);
 
     if(req.query.status) {
         
         console.log("Filter data by Status")
         
-        } else if(req.query.department) {
+    } else if(req.query.department) {
         
         console.log("Filter data by Department")
         
-        } else if(req.query.manager) {
+    } else if(req.query.manager) {
         
         console.log("Filter data by Manager")
         
-        } else {
+    } else {
         
         console.log("Show all")
+        res.sendFile(path.join(__dirname + '/data/employees.json'));
+
+    }
         
-        }
-res.sendFile(path.join(__dirname + '/data/employees.json'));
+    //res.sendFile(path.join(__dirname + '/data/employees.json'));
+    */
+
 });
 
-app.get('/employee/:value', function(req, res){
+app.get('/employee/:value', function(req, res) {
+
     res.sendFile(path.join(__dirname + '/data/employee.json'));
-    });
+
+});
 
 
 var HTTP_PORT = process.env.port || 8080;
