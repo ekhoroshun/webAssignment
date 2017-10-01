@@ -28,7 +28,7 @@ app.get('/about', function(req, res) {
 
 app.get('/employees', function(req, res) {
 
-    dataServer.initialize().then( (resolve) => {
+    dataService.initialize().then( (resolve) => {
         
         console.log(resolve);
 
