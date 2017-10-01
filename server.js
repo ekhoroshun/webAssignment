@@ -1,14 +1,14 @@
 /*********************************************************************************
-*		WEB322	– Assignment	02
-*		I	declare	that	this	assignment	is	my	own	work	in	accordance	with	Seneca		Academic	Policy.		No	part	
-*		of	this	assignment	has	been	copied	manually	or	electronically	from	any	other	source	
-*		(including	3rd	party	web	sites)	or	distributed	to	other	students.
-*	
-*		Name: elena khoroshun	Student	ID:	101908168	Date:	18 september 2017
+* WEB322 – Assignment 03
+* I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part of this
+* assignment has been copied manually or electronically from any other source (including web sites) or
+* distributed to other students.
 *
-*		Online	(Heroku)	Link:	https://lit-retreat-28570.herokuapp.com/
+* Name: Elena Khoroshun Student ID: 101908168 Date: 1/10/2017
 *
-********************************************************************************/	
+* Online (Heroku) Link: ________________________________________________________
+*
+********************************************************************************/ 	
 var dataService = require('./data-service.js');
 
 var express = require('express');
@@ -28,91 +28,80 @@ app.get('/about', function(req, res) {
 
 app.get('/employees', function(req, res) {
 
-    dataService.initialize().then( (resolve) => {
-        
-        console.log(resolve);
-
-        if(req.query.status) {
-
-            console.log("Filter data by Status")
-
-            /*
-            dataServer.getEmployeesByStatus(req.query.status).then( (resolve) => {
-                console.log(resolve)
-                res.json(resolve)
-            }, (reject) => {
-                console.log(reject)
-            } )
-            */
-
-            res.send(200);
-
-        } else if(req.query.department) {
-
-            console.log("Filter data by Department")
-
-            res.send(200);
-
-        } else if(req.query.manager) {
-
-            console.log("Filter data by Manager")
-
-            res.send(200);
-
-        } else {
-
-            var data = dataServer.getAllEmployees();
-            console.log("Show all", data)
-            res.send(data)
-
-        }
-
-    }, (reject) => {
-
-        res.send(500);
-
-    } );
-    /*
-    console.log(req.query);
-
     if(req.query.status) {
         
-        console.log("Filter data by Status")
-        
+        dataService.getEmployeesByStatus(req.query.status).then( (resolve) => {
+            res.send(resolve);
+        }, (reject) => {
+            res.send(500);
+        } );
+
     } else if(req.query.department) {
-        
-        console.log("Filter data by Department")
-        
+
+        dataService.getEmployeesByDepartment(req.query.department).then( (resolve) => {
+            res.send(resolve);
+        }, (reject) => {
+            res.send(500);
+        } );
+
     } else if(req.query.manager) {
-        
-        console.log("Filter data by Manager")
-        
+
+        dataService.getEmployeesByManager(req.query.manager).then( (resolve) => {
+            res.send(resolve);
+        }, (reject) => {
+            res.send(500);
+        } );
+
     } else {
-        
-        console.log("Show all")
-        res.sendFile(path.join(__dirname + '/data/employees.json'));
+
+        dataService.getAllEmployees().then( (response) => {
+            res.send(response)
+        }, (err) => {
+            res.send(500)
+        });
 
     }
-        
-    //res.sendFile(path.join(__dirname + '/data/employees.json'));
-    */
 
 });
 
-app.get('/employee/:value', function(req, res) {
+app.get('/managers', function(req, res) {
 
-    res.sendFile(path.join(__dirname + '/data/employee.json'));
+    dataService.getAllManagers().then( (resolve) => {
+        res.send(resolve);
+    }, (reject) => {
+        res.send(500);
+    } );
 
 });
 
+app.get('/employee/:id', function(req, res) {
 
-var HTTP_PORT = process.env.port || 8080;
+    dataService.getEmployeeByNum( req.param('id') ).then( (resolve) => {
+        res.send(resolve);
+    }, (reject) => {
+        res.send(500);
+    } );
 
-app.listen(process.env.PORT || 8080, function(){
-    console.log('listening on', app.port);
 });
 
-function onHttpStart() {
-console.log("Express http server listening on: " + HTTP_PORT);
-}
+app.get('/departments', function(req, res) {
+    
+    dataService.getAllDepartments().then( (resolve) => {
+        res.send(resolve);
+    }, (reject) => {
+        res.send(500);
+    } );
+    
+});
+    
+
+
+dataService.initialize().then( (resolve) => {
+
+    app.listen(process.env.PORT || 8080, function() {
+        console.log('listening on...', app.get('port') );
+    });
+
+})
+
 
