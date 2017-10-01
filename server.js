@@ -54,10 +54,6 @@ app.get('/employee/:value', function(req, res){
     res.sendFile(path.join(__dirname + '/data/employee.json'));
     });
 
-/*app.listen(port, function () {
-console.log('Express http server listening on ' + port)
-console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-})*/
 
 var HTTP_PORT = process.env.port || 8080;
 

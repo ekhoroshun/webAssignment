@@ -33,16 +33,23 @@ var initialize = function() {
 
 var getEmployeesByStatus = function(status) { 
 	console.log("getEmployeesByStatus", status)
-	// employees 
+    
+    
+    // employees 
 	
 };
 
 var getAllEmployees = function() { 
 
-	console.log("CALLED", employees)
-	return employees;
-	//console.log("getEmployeesByStatus", status)
-	// employees 
+
+    return new Promise((resolve, reject) => {
+        if (employees.length >0 )
+    resolve(employees)
+    reject("no results returned")
+    })
+	//console.log("CALLED", employees)
+	//return employees;
+	
 
 };
 
