@@ -40,11 +40,13 @@ app.engine(".hbs", exphbs({
 app.set("view engine", ".hbs");
 
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/views/home.html'));
+    // res.sendFile(path.join(__dirname + '/views/home.hbs'));
+    res.render("home");
 });
 
 app.get('/about', function(req, res) {
-    res.sendFile(path.join(__dirname + '/views/about.html'));
+    // res.sendFile(path.join(__dirname + '/views/about.hbs'));
+    res.render("about");
 });
 
 app.get('/employees', function(req, res) {
