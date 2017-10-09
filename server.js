@@ -6,7 +6,7 @@
 *
 * Name: Elena Khoroshun Student ID: 101908168 Date: 1/10/2017
 *
-* Online (Heroku) Link: ________________________________________________________
+* Online (Heroku) Link: https://lit-retreat-28570.herokuapp.com/
 *
 ********************************************************************************/ 	
 var dataService = require('./data-service.js');
@@ -16,7 +16,28 @@ var app = express();
 var path = require('path');
 var http = require('http');
 
+const exphbs = require('express-handlebars');
+const bodyParser = require('body-parser');
+
 app.use(express.static('public'));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.engine(".hbs", exphbs({
+ extname: ".hbs",
+ defaultLayout: 'layout',
+ helpers: {
+ equal: function (lvalue, rvalue, options) {
+ if (arguments.length < 3)
+ throw new Error("Handlebars Helper equal needs 2 parameters");
+ if (lvalue != rvalue) {
+ return options.inverse(this);
+ } else {
+ return options.fn(this);
+ }
+ }
+ }
+}));
+app.set("view engine", ".hbs");
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/views/home.html'));
