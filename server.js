@@ -54,33 +54,44 @@ app.get('/employees', function(req, res) {
     if(req.query.status) {
         
         dataService.getEmployeesByStatus(req.query.status).then( (resolve) => {
-            res.send(resolve);
+            //res.send(resolve);
+            res.render("employeeList", { data: data, title: "Employees" });
         }, (reject) => {
-            res.send(500);
+            res.render("employeeList", { data: {}, title: "Employees" });
+           //res.send(500);
         } );
 
     } else if(req.query.department) {
 
         dataService.getEmployeesByDepartment(req.query.department).then( (resolve) => {
-            res.send(resolve);
+            res.render("employeeList", { data: data, title: "Employees" });
+            
+           // res.send(resolve);
         }, (reject) => {
-            res.send(500);
+            res.render("employeeList", { data: {}, title: "Employees" });
+           // res.send(500);
         } );
 
     } else if(req.query.manager) {
 
         dataService.getEmployeesByManager(req.query.manager).then( (resolve) => {
-            res.send(resolve);
+            res.render("employeeList", { data: data, title: "Employees" });
+            //res.send(resolve);
         }, (reject) => {
-            res.send(500);
+            res.render("employeeList", { data: {}, title: "Employees" });
+            
+           //res.send(500);
         } );
 
     } else {
 
-        dataService.getAllEmployees().then( (response) => {
-            res.send(response)
+        dataService.getAllEmployees().then( (resolve) => {
+            res.render("employeeList", { data: data, title: "Employees" });
+           // res.send(response)
+            
         }, (err) => {
-            res.send(500)
+          // res.send(500)
+            res.render("employeeList", { data: {}, title: "Employees" });
         });
 
     }
@@ -90,9 +101,11 @@ app.get('/employees', function(req, res) {
 app.get('/managers', function(req, res) {
 
     dataService.getAllManagers().then( (resolve) => {
-        res.send(resolve);
+        //res.send(resolve);
+    res.render("employeeList", { data: data, title: "Employees (Managers)" });    
     }, (reject) => {
-        res.send(500);
+        res.render("employeeList", { data:{}, title: "Employees (Managers)" });
+       // res.send(500);
     } );
 
 });
@@ -110,9 +123,16 @@ app.get('/employee/:id', function(req, res) {
 app.get('/departments', function(req, res) {
     
     dataService.getAllDepartments().then( (resolve) => {
-        res.send(resolve);
+
+        res.render("departmentList", { data: data, title:
+            "Departments" });
+        //res.send(resolve);
     }, (reject) => {
-        res.send(500);
+        //res.send(500);
+
+        res.render("departmentList", { data: {}, title:
+        "Departments" });
+
     } );
     
 });
