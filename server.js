@@ -19,6 +19,8 @@ var http = require('http');
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 
+const employees  = path.join (__dirname, 'data/employees.json');
+
 app.use(express.static('public'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -110,12 +112,12 @@ app.get('/managers', function(req, res) {
 
 });
 
-app.get('/employee/:id', function(req, res) {
+app.get('/employee/', function(req, res) {
 
     dataService.getEmployeeByNum( req.param('id') ).then( (resolve) => {
         res.send(resolve);
     }, (reject) => {
-        res.send(500);
+        res.sendStatus(500);
     } );
 
 });
@@ -137,14 +139,45 @@ app.get('/departments', function(req, res) {
     
 });
     
-
-
 dataService.initialize().then( (resolve) => {
 
     app.listen(process.env.PORT || 8080, function() {
         console.log('listening on...', app.get('port') );
     });
+});
 
+app.get("/employees/add", (req,res) => {
+    res.render("addEmployee");
+});
+
+app.post("/employees/add", (req, res) => {
+    
+  dataService.addEmployee(req.body).then(()=> {
+         res.redirect("/employees");
+     
+    })
+});
+
+
+app.get("/employee/:empNum", function (req, res) {
+    
+    console.log('kek');
+    dataService.getEmployeeByNum(req.params.empNum).then( (resolve) =>{
+    
+    res.render("employee", { data: resolve })
+    }),
+    (reject) => {
+        res.status(404).send("Employee Not Found");
+    };
+});
+
+app.post("/employee/update", (req, res) => {
+    dataService.addEmployee(req.params).then((resolve) => {
+       
+        res.redirect("/employees");
+    }), (reject) => {
+        res.status(404).send("Employee cant be upd");
+    };
+    
 })
-
 

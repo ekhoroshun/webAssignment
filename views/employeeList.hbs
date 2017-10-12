@@ -23,8 +23,26 @@ New Employee</a></h1>
                         <th>&nbsp;</th>
                     </tr>
                      </thead>
- {{#each data}}
- {{firstName}} {{last_name}}<br />
- {{/each}}
+            <tbody>
+                 {{#if data}} {{#each data}}
+                       <tr>
+                        <td>{{employeeNum}}</td>
+                        <td><a href="/employee/{{employeeNum}}">{{firstName}} {{last_Name}}</a></td>
+                        <td><a href="mailto:{{email}}">{{email}}</a></td>
+                        <td>{{addressStreet}} {{addressCity}} {{addressState}} {{addressPostal}}</td>
+                        <td><a href="/employees?manager={{employeeManagerNum}}">{{employeeManagerNum}}</a></td>
+                        <td><a href="/employees?status={{status}}">{{status}}</a></td>
+                        <td><a href="/employees?department={{department}}">{{department}}</a></td>
+                        <td>{{hireDate}}</td>
+                        <td><a href="/employee/delete/{{employeeNum}}" class="btn btn-danger">Remove</a></td>
+                    </tr>
+                    {{/each}} {{else}}
+                    <tr>
+                        <td>No Data Available
+                            <td>
+                    </tr>
+                    {{/if}}
+                </tbody>
+            </table>
  </div>
 </div>

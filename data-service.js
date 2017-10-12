@@ -3,8 +3,14 @@ var fs = require('fs');
 
 var employees = [];
 var departments = [];
+var empCount = 0;
+
+var employeesPath   = './data/employees.json';
+var departmentsPath = './data/departments.json';
 
 var initialize = function() { 
+
+    
 
 	return new Promise((resolve, reject) => {
 
@@ -13,14 +19,18 @@ var initialize = function() {
 			if(err) reject("unable to read file employees");
 
 			var parsed_employees = JSON.parse(data);
-	  		employees = parsed_employees;
+              employees = parsed_employees;
+              
+              
 
 			fs.readFile('./data/departments.json', (err, data) => {
 
                 if(err) reject("unable to read file departments");
 
 			  	var parsed_departments = JSON.parse(data);
-			  	departments = parsed_departments;
+                departments = parsed_departments;
+                  
+                empCount = employees.length;
 
 			  	resolve("Success")
 			  	
@@ -133,7 +143,8 @@ var getEmployeeByNum = function(employee) {
             }
 
         }
-        if(filtered_employees.length > 0) {
+        if(
+            filtered_employees.length >0) {
             resolve(filtered_employees);
         }
 
@@ -182,6 +193,40 @@ var getAllDepartments = function() {
     
 };
 
+var  addEmployee = function(employeeData) {
+
+    return new Promise((resolve, reject) => {
+        
+        empCount++;
+        console.log(employeeData)
+        if(employeeData!='undefined') 
+        {
+
+            employeeData.employeeNum = empCount;
+            employees.push(employeeData);
+            resolve(employeeData);
+        }
+        else
+          {
+              reject("no result");
+          }
+        })
+
+};
+
+var updateEmployee = function (employeeData){
+return new promise((resolve, reject) => {
+    for (var i = 0; i < employees.length; i++){
+        if (employeeNum.employeeData = employees[i].employeeNum)
+        {
+            employees[i] = employeeData;
+        }
+        resolve(employeeData);
+    }
+})
+
+
+}
 exports.initialize = initialize;
 exports.getEmployeesByStatus = getEmployeesByStatus;
 exports.getAllEmployees = getAllEmployees;
@@ -190,3 +235,5 @@ exports.getEmployeesByManager = getEmployeesByManager;
 exports.getEmployeeByNum = getEmployeeByNum;
 exports.getAllManagers = getAllManagers;
 exports.getAllDepartments = getAllDepartments;
+exports.addEmployee = addEmployee;
+exports.updateEmployee = updateEmployee;
