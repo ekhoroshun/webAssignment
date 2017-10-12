@@ -5,8 +5,7 @@ var employees = [];
 var departments = [];
 var empCount = 0;
 
-var employeesPath   = './data/employees.json';
-var departmentsPath = './data/departments.json';
+
 
 var initialize = function() { 
 
