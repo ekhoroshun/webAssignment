@@ -20,7 +20,7 @@ New Employee</a></h1>
                         <th>Status</th>
                         <th>Department</th>
                         <th>Hired On</th>
-                        <th>&nbsp;</th>
+                        
                     </tr>
                      </thead>
             <tbody>
@@ -34,7 +34,6 @@ New Employee</a></h1>
                         <td><a href="/employees?status={{status}}">{{status}}</a></td>
                         <td><a href="/employees?department={{department}}">{{department}}</a></td>
                         <td>{{hireDate}}</td>
-                        <td><a href="/employee/delete/{{employeeNum}}" class="btn btn-danger">Remove</a></td>
                     </tr>
                     {{/each}} {{else}}
                     <tr>
