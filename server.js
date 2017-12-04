@@ -18,8 +18,8 @@ var http = require('http');
 
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
+var HTTP_PORT = process.env.PORT || 8080;
 
-const employees  = path.join (__dirname, 'data/employees.json');
 
 app.use(express.static('public'));
 
@@ -139,12 +139,7 @@ app.get('/departments', function(req, res) {
     
 });
     
-dataService.initialize().then( (resolve) => {
 
-    app.listen(process.env.PORT || 8080, function() {
-        console.log('listening on...', app.get('port') );
-    });
-});
 
 app.get("/employees/add", (req, res)=>{
     dataService.getDepartments().then((data)=>{
@@ -241,3 +236,9 @@ app.post("/employee/update", (req, res) => {
     
 })
 
+dataService.initialize().then( (resolve) => {
+    
+        app.listen(process.env.PORT || 8080, function() {
+            console.log('listening on...', app.get('port') );
+        });
+    });

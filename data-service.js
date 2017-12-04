@@ -1,21 +1,15 @@
-//var fs = require('fs');
-
-
-// var employees = [];
-// var departments = [];
-// var empCount = 0;
-
 const Sequelize = require('sequelize');
 
-var sequelize = new Sequelize('d2u767tfesl8jp', 'pfsqnmmhjrwyzp', '336d08940f58b4fe6d84d0892bcf323c90f52df993046caac850ea3d550bb3fa', {
-    host: 'ec2-23-23-186-157.compute-1.amazonaws.com',
+var sequelize = new Sequelize('deo0qd32sumq8h', 'kzwdwingkzvctp', '455e4a66365e1a01e77061e151f77c36ac1c746d77f5eef70d4088bf85e5043e', {
+    host: 'ec2-54-163-249-237.compute-1.amazonaws.com',
     dialect: 'postgres',
     port: 5432,
+    
     dialectOptions: {
     ssl: true
     }
    });
-   
+
    var Employee = sequelize.define('Employee', {
     employeeNum: {
         type: Sequelize.INTEGER,
