@@ -19,7 +19,7 @@ const pg = require('pg');
 
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-var HTTP_PORT = process.env.PORT || 8080;
+var HTTP_PORT = process.env.PORT || 3000;
 
 
 app.use(express.static('public'));
@@ -239,7 +239,7 @@ app.post("/employee/update", (req, res) => {
 
 dataService.initialize().then( (resolve) => {
     
-        app.listen(process.env.PORT || 8080, function() {
+        app.listen(process.env.PORT || 3000, function() {
             console.log('listening on...', app.get('port') );
         });
     });
