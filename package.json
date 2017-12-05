@@ -20,8 +20,8 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
-    "mongoose": "^4.13.6",
-    "pg": "^7.4.0",
+    "mongoose": "*",
+    "pg": "*",
     "pg-hstore": "^2.3.2",
     "sequelize": "*"
   }
@@ -29,3 +29,4 @@
 
 //"sequelize": "^4.26.0"
 //"mongoose": "^4.13.6",
+//"pg": "^7.4.0",
