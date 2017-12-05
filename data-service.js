@@ -10,6 +10,15 @@ var sequelize = new Sequelize('deo0qd32sumq8h', 'kzwdwingkzvctp', '455e4a66365e1
     }
    });
 
+   sequelize
+   .authenticate()
+   .then(function() {
+       console.log('Connection has been established successfully.');
+   })
+   .catch(function(err) {
+       console.log('Unable to connect to the database:', err);
+   });
+
    var Employee = sequelize.define('Employee', {
     employeeNum: {
         type: Sequelize.INTEGER,
@@ -87,6 +96,7 @@ var initialize = function() {
 var getEmployeesByDepartment = function(department) {  
 
     return new Promise((resolve, reject)=>{
+        sequelize.sync().then(function () { 
         Employee.findAll({
             order: ["employeeNum"],
             where: {
@@ -98,7 +108,7 @@ var getEmployeesByDepartment = function(department) {
             reject("no results returned");
         });
     });
-
+    })}
     // console.log("Department ID recieved", department)
 
     // return new Promise((resolve, reject) => {
@@ -119,11 +129,12 @@ var getEmployeesByDepartment = function(department) {
 
     // });
 	
-};
+
 
 var getEmployeesByStatus = function(status) {  
     
     return new Promise((resolve, reject)=>{
+        sequelize.sync().then(function () {
         Employee.findAll({
             order: ["employeeNum"],
             where: {
@@ -135,7 +146,7 @@ var getEmployeesByStatus = function(status) {
             reject("no results returned");
         });
     });
-
+    })}
     // console.log("Status recieved", status)
 
     // return new Promise((resolve, reject) => {
@@ -157,7 +168,7 @@ var getEmployeesByStatus = function(status) {
 
     // });
     
-};
+
 
 var getAllEmployees = function() { 
 
@@ -213,6 +224,7 @@ var getEmployeesByManager = function(manager) {
 var getEmployeeByNum = function(employee) {  
     
     return new Promise((resolve, reject)=>{
+        sequelize.sync().then(function () {
         Employee.findAll({
             where: {
                 employeeNum: num
@@ -223,7 +235,7 @@ var getEmployeeByNum = function(employee) {
             reject("no results returned");
         });
     });
-
+    });
     // console.log("Employee ID recieved", employee)
 
     // return new Promise((resolve, reject) => {
@@ -335,6 +347,7 @@ var  addEmployee = function(employeeData) {
     //       }
     //     })
     return new Promise((resolve, reject)=>{
+        sequelize.sync().then(function () {
         Employee.create({
             firstName: employeeData.firstName,
             last_name: employeeData.last_name,
@@ -355,7 +368,7 @@ var  addEmployee = function(employeeData) {
         }).catch((err)=>{
             reject("unable to create employee");
         });
-        
+    });  
     });
 };
 
@@ -369,6 +382,7 @@ var updateEmployee = function (employeeData){
         }
     }
     return new Promise((resolve, reject)=>{
+        sequelize.sync().then(function () {
         Employee.update({
             firstName: employeeData.firstName,
             last_name: employeeData.last_name,
@@ -393,7 +407,8 @@ var updateEmployee = function (employeeData){
         }).catch((err)=>{
             reject("unable to update employee");
         });
-    });   
+    });
+});   
 }
 // return new promise((resolve, reject) => {
 //     for (var i = 0; i < employees.length; i++){
