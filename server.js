@@ -19,7 +19,7 @@ const pg = require('pg');
 
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-var HTTP_PORT = process.env.PORT || 3000;
+//var HTTP_PORT = process.env.PORT || 3000;
 
 
 app.use(express.static('public'));

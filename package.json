@@ -1,32 +1,29 @@
 {
-  "name": "assignment2final",
+  "name": "ekhoroshun322webapp",
   "version": "1.0.0",
-  "description": "def",
-  "main": "server.js",
+  "description": "desc",
+  "main": "data-service.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express-handlebars": "^3.0.0",
+    "express": "^4.16.2",
+    "mongoose": "^4.13.6",
+    "pg": "^7.4.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.26.0"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "def",
+    "test": "default",
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git"
+    "url": "fit"
   },
   "keywords": [
     "def"
   ],
   "author": "elena khoroshun",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "express": "^4.16.2",
-    "express-handlebars": "^3.0.0",
-    "mongoose": "4.13.6",
-    "pg": "^7.4.0",
-    "pg-hstore": "^2.3.2",
-    "sequelize": "4.26.0"
-  }
+  "license": "ISC"
 }
-
-//"sequelize": "^4.26.0"
-//"mongoose": "^4.13.6",
-//"pg": "^7.4.0",
