@@ -20,7 +20,7 @@ pull-right" style="margin-top:5px;">Add New Department</a><h1>
                     {{#each data}}
                     <tr>
                         <td><a href="/department/{{departmentId}}">{{departmentId}}</a></td>
-                        <td><a href="/department/{{departmentId}}">{{departmentId}}</a></td>
+                         <td><a href="/employees?department={{departmentId}}">{{departmentName}}</a></td>
                     </tr>
                     {{/each}}
                     {{else}}
