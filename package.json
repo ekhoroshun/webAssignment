@@ -12,7 +12,9 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.26.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "git-push": "^0.1.1"
+  },
   "scripts": {
     "test": "default",
     "start": "node server.js"
