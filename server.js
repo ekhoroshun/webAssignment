@@ -1,10 +1,10 @@
 /*********************************************************************************
- * WEB322 – Assignment 04
+ * WEB322 – Assignment 05
  * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part of this
  * assignment has been copied manually or electronically from any other source (including web sites) or
  * distributed to other students.
  *
- * Name: Elena Khoroshun Student ID: 101908168 Date: 12/10/2017
+ * Name: Elena Khoroshun Student ID: 101908168 Date: 08/12/2017
  *
  * Online (Heroku) Link: https://lit-retreat-28570.herokuapp.com/
  *
@@ -229,7 +229,6 @@ app.post("/employees/add", (req, res) => {
 });
 
 
-
 app.get("/employee/delete/:empNum", (req, res)=>{
     dataService.deleteEmployeeByNum(req.params.empNum).then(()=>{
         res.redirect("/employees");
@@ -239,47 +238,61 @@ app.get("/employee/delete/:empNum", (req, res)=>{
 });
 
 
-
 app.get("/employee/:empNum", (req, res) => {
     // initialize an empty object to store the values
     let viewData = {};
     dataService.getEmployeeByNum(req.params.empNum)
-    .then((data) => {
-    viewData.data = data; //store employee data in the "viewData" object as "data"
-    }).catch(()=>{
-    viewData.data = null; // set employee to null if there was an error
-    }).then(dataService.getDepartments)
-    .then((data) => {
-    viewData.departments = data; // store department data in the "viewData" object as "departments"
+        .then((data) => {
 
-    // loop through viewData.departments and once we have found the departmentId that matches
-    // the employee's "department" value, add a "selected" property to the matching
-    // viewData.departments object
-    for (let i = 0; i < viewData.departments.length; i++) {
-    if (viewData.departments[i].departmentId == viewData.data.department) {
-    viewData.departments[i].selected = true;
-    }
-    }
-    }).catch(()=>{
-    viewData.departments=[]; // set departments to empty if there was an error
-    }).then(()=>{
-    if(viewData.data == null){ // if no employee - return an error
-    res.status(404).send("Employee Not Found");
-    }else{
-    res.render("employee", { viewData: viewData }); // render the "employee" view
-    }
+            viewData.data = data; //store employee data in the "viewData" object as "data"
+
+        }).catch(() => {
+
+            viewData.data = null; // set employee to null if there was an error
+
+        }).then(dataService.getDepartments).then((data) => {
+
+            viewData.departments = data; // store department data in the "viewData" object as "departments"
+
+            // loop through viewData.departments and once we have found the departmentId that matches
+            // the employee's "department" value, add a "selected" property to the matching
+            // viewData.departments object
+            for (let i = 0; i < viewData.departments.length; i++) {
+                if (viewData.departments[i].departmentId == viewData.data.department) {
+                    viewData.departments[i].selected = true;
+                }
+            }
+        }).catch(() => {
+            viewData.departments = []; // set departments to empty if there was an error
+        }).then(() => {
+            if (viewData.data == null) { // if no employee - return an error
+                res.status(404).send("Employee Not Found");
+            } else {
+
+                res.render("employee", {data: viewData.data});
+
+            }
+        });
+});
+
+/*
+app.post("/department/update", (req, res)=>{
+    dataService.updateDepartment(req.body).then(()=>{
+        res.redirect("/departments");
+    }).catch((err)=>{
+        res.json(err);
     });
-   });
+});
+*/
 
 app.post("/employee/update", (req, res) => {
-    dataService.addEmployee(req.params).then((resolve) => {
 
+    dataService.updateEmployee(req.body).then(()=>{
         res.redirect("/employees");
-    }), (reject) => {
+    }).catch((err)=>{
         res.status(404).send("Employee cant be upd");
-    };
-
-})
+    });
+});
 
 
 dataService.initialize().then( (resolve) => {

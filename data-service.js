@@ -221,19 +221,34 @@ var getEmployeesByManager = function(manager) {
 
 var getEmployeeByNum = function(employee) {
 
+    return new Promise((resolve, reject)=>{
+        Employee.findAll({
+            where: {
+                employeeNum: employee
+            }
+        }).then((data)=>{
+            resolve(data[0]);
+        }).catch((err)=>{
+            reject("no results returned");
+        });
+    });
+
+    /*
     return new Promise((resolve, reject) => {
         sequelize.sync().then(function() {
             Employee.findAll({
                 where: {
-                    employeeNum: employeeNum
+                    employeeNum: employee
                 }
             }).then((data) => {
+                console.log(data[0].firstName)
                 resolve(data[0]);
             }).catch((err) => {
                 reject("no results returned");
             });
         });
     });
+    */
     // console.log("Employee ID recieved", employee)
 
     // return new Promise((resolve, reject) => {
@@ -320,32 +335,19 @@ var getAllDepartments = function() {
 };
 
 var  addEmployee = function(employeeData) {
-    employeeData.isManager = (employeeData.isManager) ? true : false;
+   
+
+
+    return new Promise((resolve, reject)=>{
 
     for  (let i in employeeData){
         if (employeeData[i]==""){
             employeeData[i]=null;
         }
-    }
-
-// return new Promise((resolve, reject) => {
-
-//     empCount++;
-//     console.log(employeeData)
-//     if(employeeData!='undefined') 
-//     {
-
-//         employeeData.employeeNum = empCount;
-//         employees.push(employeeData);
-//         resolve(employeeData);
-//     }
-//     else
-//       {
-//           reject("no result");
-//       }
-//     })
-    return new Promise((resolve, reject)=>{
-        sequelize.sync().then(function () {
+    } 
+    employeeData.isManager = (employeeData.isManager) ? true : false;
+       
+    sequelize.sync().then(function () {
         Employee.create({
             employeeNum: employeeData.employeeNum,
             firstName: employeeData.firstName,
@@ -373,41 +375,48 @@ var  addEmployee = function(employeeData) {
 
 var updateEmployee = function (employeeData){
 
-    employeeData.isManager = (employeeData.isManager) ? true : false;
+    console.log("employeeData", employeeData)
+    
 
-    for (let i in employeeData){
+    return new Promise((resolve, reject)=>{
+        
+        for (let i in employeeData){
         if (employeeData[i] == ""){
             employeeData[i] = null;
         }
     }
-    return new Promise((resolve, reject)=>{
+
+    employeeData.isManager = (employeeData.isManager) ? true : false;
+
+
         sequelize.sync().then(function () {
-        Employee.update({
-            firstName: employeeData.firstName,
-            last_name: employeeData.last_name,
-            email: employeeData.email,
-            SSN: employeeData.SSN,
-            addressStreet: employeeData.addressStreet,
-            addresCity: employeeData.addresCity,
-            addressState: employeeData.addressState,
-            addressPostal: employeeData.addressPostal,
-            maritalStatus: employeeData.maritalStatus,
-            isManager: employeeData.isManager,
-            employeeManagerNum: employeeData.employeeManagerNum,
-            status: employeeData.status,
-            department: employeeData.department,
-            hireDate: employeeData.hireDate
-        }, {
-            where: {
-                employeeNum: employeeData.employeeNum
-            }
-        }).then(()=>{
-            resolve();
-        }).catch((err)=>{
-            reject("unable to update employee");
+            Employee.update({
+                firstName: employeeData.firstName,
+                last_name: employeeData.last_name,
+                email: employeeData.email,
+                SSN: employeeData.SSN,
+                addressStreet: employeeData.addressStreet,
+                addresCity: employeeData.addresCity,
+                addressState: employeeData.addressState,
+                addressPostal: employeeData.addressPostal,
+                maritalStatus: employeeData.maritalStatus,
+                isManager: employeeData.isManager,
+                employeeManagerNum: employeeData.employeeManagerNum,
+                status: employeeData.status,
+                department: employeeData.department,
+                hireDate: employeeData.hireDate
+            }, {
+                where: {
+                    employeeNum: employeeData.employeeNum
+                }
+            }).then(()=>{
+                resolve();
+            }).catch((err)=>{
+                console.log("This Error", err)
+                reject("unable to update employee");
+            });
         });
-    });
-});   
+    });   
 }
 // return new promise((resolve, reject) => {
 //     for (var i = 0; i < employees.length; i++){
@@ -439,28 +448,28 @@ var addDepartment = function (departmentData){
            });
 }
 
-var updateDepartment = function(departmentData){
-   
-return new promise ((resolve, reject)=>{
-    
-    for (let i in departmentData){
-        if (departmentData[i] == ""){
-            departmentData[i] = null;
-        }
-    }
+var updateDepartment = function(departmentData) {
 
- Department.update({
-        departmentId: departmentData.departmentId,
-        departmentName: departmentData.departmentName},
-        {
-            where: {
-                departmentId:departmentData.departmentId
+    return new Promise((resolve, reject) => {
+
+        for (let i in departmentData) {
+            if (departmentData[i] == "") {
+                departmentData[i] = null;
             }
-        }).then(()=>{
-        resolve();
-    }).catch((err)=>{
-        reject("unable to upd departm");
-    });
+        }
+
+        Department.update({
+            departmentId: departmentData.departmentId,
+            departmentName: departmentData.departmentName
+        }, {
+            where: {
+                departmentId: departmentData.departmentId
+            }
+        }).then(() => {
+            resolve();
+        }).catch((err) => {
+            reject("unable to upd departm");
+        });
     });
 
 }
