@@ -5,9 +5,9 @@
   "main": "data-service.js",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "express-handlebars": "^3.0.0",
     "express": "^4.16.2",
-    "mongoose": "^4.13.6",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^4.13.7",
     "pg": "^7.4.0",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.26.0"

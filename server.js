@@ -10,6 +10,7 @@
  *
  ********************************************************************************/
 var dataService = require('./data-service.js');
+const dataServiceComments = require("./data-service-comments.js");
 
 var express = require('express');
 var app = express();
@@ -295,10 +296,50 @@ app.post("/employee/update", (req, res) => {
 });
 
 
-dataService.initialize().then( (resolve) => {
-    
-    app.listen(HTTP_PORT, function() {
-        console.log('listening on...', HTTP_PORT );
+app.post("/about/addComment", (req, res)=>{
+    dataServiceComments.addComment(req.body).then(()=>
+{
+    res.redirect("/about");
+}).catch((err)=>
+{
+    console.log(err);
+});
+});
+
+app.post("/about/addReply", (req, res)=> {
+    dataServiceComments.addReply(req.body).then(()=>
+    {
+        res.redirect("/about");
+    }).catch((err)=>
+    {
+        console.log(err);
+    });
     });
 
+app.get("/about", function (req, res) {
+    dataServiceComments.getAllComments().then( (dataFromPromise)=>
+{
+    res.render("about", {data: dataFromPromise});
+})
+.catch ((err)=>
+{
+    res.render("about");
+})
+})
+// dataService.initialize().then( (resolve) => {
+    
+//     app.listen(HTTP_PORT, function() {
+//         console.log('listening on...', HTTP_PORT );
+//     });
+
+// });
+
+dataService.initialize()
+.then( dataServiceComments.initialize )
+.then(()=> {
+app.listen(HTTP_PORT, onHttpStart);
+})
+.catch(()=> {
+console.log("unable to start dataService");
 });
+
