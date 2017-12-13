@@ -46,7 +46,7 @@ console.log("fail"+err);
 reject;
 }
 else{
-resolve;
+resolve(newComment._id);
 }
 });
 });
@@ -58,9 +58,9 @@ var getAllComments = function(){
         Comment.find()
         .sort({ postedDate : 1 })
         .exec()
-        .then((comments)=>
+        .then((data)=>
     {
-        resolve(comments);
+        resolve(data);
     }).catch( (err)=>{
         reject(err);
     });
@@ -68,6 +68,7 @@ var getAllComments = function(){
 }
 
 var addReply = function(data){
+    return new Promise(function(resolve,reject){
 data.repliedDate = Date.now();
 Comment.update({_id: data.comment_id}
     ,
@@ -80,6 +81,7 @@ resolve();
 }).catch((err)=>{
     reject(err);
 });
+})
 }
 
 exports.addComment = addComment;
