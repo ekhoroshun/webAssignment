@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 //define new schema
+
 var commentSchema = new Schema({
     "authorName":  String,
     "authorEmail": String,

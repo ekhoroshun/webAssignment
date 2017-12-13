@@ -335,11 +335,11 @@ app.get("/about", function (req, res) {
 // });
 
 dataService.initialize()
-.then( dataServiceComments.initialize )
+.then( dataServiceComments.initialize ())
 .then( () => {
   app.listen(HTTP_PORT, onHttpStart);
 })
-.catch( (errorMsg) => {
+.catch( (err) => {
 console.log("unable to start dataService");
 });
 
