@@ -336,10 +336,9 @@ app.get("/about", function (req, res) {
 
 dataService.initialize()
 .then( dataServiceComments.initialize )
-.then(()=> {
-app.listen(HTTP_PORT, onHttpStart);
+.then( () => {
+  app.listen(HTTP_PORT, onHttpStart);
 })
-.catch(()=> {
+.catch( (errorMsg) => {
 console.log("unable to start dataService");
 });
-
