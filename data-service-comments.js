@@ -36,7 +36,7 @@ module.exports.initialize = function () {
     });
    };
 
-var addComment = function(data) {
+   module.exports.addComment = (data) =>  {
     return new Promise (function(resolve, reject)
 {
     data.postedDate = Date.now();
@@ -54,7 +54,7 @@ resolve(newComment._id);
 };
 
 //return all comments
-var getAllComments = function(){
+module.exports.getAllComments = () => {
     return new Promise(function(resolve, reject){
         Comment.find()
         .sort({ postedDate : 1 })
@@ -68,7 +68,7 @@ var getAllComments = function(){
     });
 }
 
-var addReply = function(data){
+module.exports.addReply = (data) => {
     return new Promise(function(resolve,reject){
 data.repliedDate = Date.now();
 Comment.update({_id: data.comment_id}
@@ -84,7 +84,3 @@ resolve();
 });
 })
 }
-
-exports.addComment = addComment;
-exports.getAllComments = getAllComments;
-exports.addReply = addReply;

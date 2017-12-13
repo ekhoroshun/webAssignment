@@ -20,7 +20,7 @@ const pg = require('pg');
 const Sequelize = require("sequelize");
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
-var HTTP_PORT = process.env.PORT || 3000;
+var HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static('public'));
 
