@@ -43,8 +43,8 @@ module.exports.initialize = function () {
     let newComment = new Comment(data);
     newComment.save ((err)=>
 {if (err){
-console.log("fail"+err);
-reject;
+
+reject("was error to save" + err);
 }
 else{
 resolve(newComment._id);
@@ -59,9 +59,9 @@ module.exports.getAllComments = () => {
         Comment.find()
         .sort({ postedDate : 1 })
         .exec()
-        .then((data)=>
+        .then((comments)=>
     {
-        resolve(data);
+        resolve(comments);
     }).catch( (err)=>{
         reject(err);
     });
