@@ -326,20 +326,23 @@ app.get("/about", function (req, res) {
     res.render("about");
 })
 })
-dataService.initialize().then( (resolve) => {
-    dataServiceComments.initialize ()
-    app.listen(HTTP_PORT, function() {
-        console.log('listening on...', HTTP_PORT );
-    });
+// dataService.initialize().then( (resolve) => {
+   
+//     app.listen(HTTP_PORT, function() {
+//         console.log('listening on...', HTTP_PORT );
+//     });
 
+// });
+
+dataService.initialize()
+.then( dataServiceComments.initialize() )
+
+.then( () => {
+  app.listen(HTTP_PORT, onHttpStart);
+})
+.catch( (err) => {
+  
+  console.log("unable to start dataService");
 });
 
-// dataService.initialize()
-// .then( dataServiceComments.initialize ())
-// .then( () => {
-//   app.listen(HTTP_PORT, onHttpStart);
-// })
-// .catch( (err) => {
-// console.log("unable to start dataService");
-// });
 
