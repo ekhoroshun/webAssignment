@@ -297,35 +297,30 @@ app.post("/employee/update", (req, res) => {
 
 
 app.post("/about/addComment", (req, res)=>{
-    dataServiceComments.addComment(req.body).then(()=>
-{
-    res.redirect("/about");
-}).catch((err)=>
-{
-    console.log(err);
-});
-});
-
-app.post("/about/addReply", (req, res)=> {
-    dataServiceComments.addReply(req.body).then(()=>
-    {
+    dataServiceComments.addComment(req.body).then(()=>{
         res.redirect("/about");
-    }).catch((err)=>
-    {
-        console.log(err);
+    }).catch((err)=>{
+        console.log("Fail to add comment: " + err);
+        res.redirect("/about");
     });
-    });
+});
 
-app.get("/about", function (req, res) {
-    dataServiceComments.getAllComments().then( (dataFromPromise)=>
-{
-    res.render("about", {data: dataFromPromise});
-})
-.catch ((err)=>
-{
-    res.render("about");
-})
-})
+app.post("/about/addReply", (req, res)=>{
+    dataServiceComments.addReply(req.body).then(()=>{
+        res.redirect("/about");
+    }).catch((err)=>{
+        console.log("Fail to reply to comment: " + err);
+        res.redirect("/about");
+    });
+});
+
+app.get("/about", (req, res)=>{
+    dataServiceComments.getAllComments().then((commentData)=>{
+        res.render("about", {data: commentData});
+    }).catch(()=>{
+        res.render("about");
+    });
+});
 // dataService.initialize().then( (resolve) => {
    
 //     app.listen(HTTP_PORT, function() {

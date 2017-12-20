@@ -23,7 +23,7 @@ var commentSchema = new Schema({
 
 
   //connect to db
-module.exports.initialize = function () {
+module.exports.initialize = () => {
     return new Promise(function (resolve, reject) {
     let db = mongoose.createConnection("mongodb://ekhoroshun:cite13ur@ds053778.mlab.com:53778/web322_a6");
     db.on('error', (err)=>{
@@ -36,7 +36,7 @@ module.exports.initialize = function () {
     });
    };
 
-   module.exports.addComment = (data) =>  {
+module.exports.addComment = (data) =>  {
     return new Promise (function(resolve, reject)
 {
     data.postedDate = Date.now();
@@ -84,3 +84,4 @@ resolve();
 });
 })
 }
+
