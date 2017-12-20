@@ -334,15 +334,18 @@ app.get("/about", function (req, res) {
 
 // });
 
-dataService.initialize()
-.then( dataServiceComments.initialize() )
+app.use((req, res)=>{
+    res.status(404).send("Page Not Found");
+});
 
-.then( () => {
-  app.listen(HTTP_PORT, onHttpStart);
-})
-.catch( (err) => {
-  
-  console.log("unable to start dataService");
+dataService.initialize()
+.then(dataServiceComments.initialize())
+.then(()=>{
+    app.listen(HTTP_PORT, () =>{
+        console.log("server listening on " + HTTP_PORT);
+    }); 
+}).catch((err)=>{
+    console.log("unable to start data_service");
 });
 
 
