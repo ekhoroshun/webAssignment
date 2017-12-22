@@ -51,10 +51,12 @@ app.get('/', function(req, res) {
     res.render("home");
 });
 
+/*
 app.get('/about', function(req, res) {
     // res.sendFile(path.join(__dirname + '/views/about.hbs'));
     res.render("about");
 });
+*/
 
 app.get('/employees', function(req, res) {
 
@@ -181,59 +183,63 @@ app.get('/departments', function(req, res) {
 
 
 
-
-
-app.get("/departments/add", (req, res)=>{
+app.get("/departments/add", (req, res) => {
     res.render("addDepartment");
-});//new
+}); //new
 
-app.post("/departments/add", (req, res)=>{
-    dataService.addDepartment(req.body).then(()=>{
+app.post("/departments/add", (req, res) => {
+    dataService.addDepartment(req.body).then(() => {
         res.redirect("/departments");
-    }).catch((err)=>{
+    }).catch((err) => {
         res.json(err);
     });
-});//new
+}); //new
 
-app.post("/department/update", (req, res)=>{
-    dataService.updateDepartment(req.body).then(()=>{
+app.post("/department/update", (req, res) => {
+    dataService.updateDepartment(req.body).then(() => {
         res.redirect("/departments");
-    }).catch((err)=>{
+    }).catch((err) => {
         res.json(err);
     });
 });
 
-app.get("/department/:departmentId", (req,  res)=>{
-    dataService.getDepartmentById(req.params.departmentId).then((data)=>{
-        res.render("department", {data: data});
-    }).catch(()=>{
+app.get("/department/:departmentId", (req, res) => {
+    dataService.getDepartmentById(req.params.departmentId).then((data) => {
+        res.render("department", {
+            data: data
+        });
+    }).catch(() => {
         res.status(404).send("Department Not Found");
     });
 });
 
 //EMPLOYEES
 
-app.get("/employees/add", (req, res)=>{
-    dataService.getAllDepartments().then((data)=>{
-        res.render("addEmployee", {departments: data});
-    }).catch((err)=>{
-        res.render("addEmployee", {departments: []});
+app.get("/employees/add", (req, res) => {
+    dataService.getAllDepartments().then((data) => {
+        res.render("addEmployee", {
+            departments: data
+        });
+    }).catch((err) => {
+        res.render("addEmployee", {
+            departments: []
+        });
     });
 });
 
 app.post("/employees/add", (req, res) => {
 
-  dataService.addEmployee(req.body).then(()=> {
-         res.redirect("/employees");
+    dataService.addEmployee(req.body).then(() => {
+        res.redirect("/employees");
 
     })
 });
 
 
-app.get("/employee/delete/:empNum", (req, res)=>{
-    dataService.deleteEmployeeByNum(req.params.empNum).then(()=>{
+app.get("/employee/delete/:empNum", (req, res) => {
+    dataService.deleteEmployeeByNum(req.params.empNum).then(() => {
         res.redirect("/employees");
-    }).catch((err)=>{
+    }).catch((err) => {
         res.status(500).send(err);
     });
 });
@@ -270,7 +276,9 @@ app.get("/employee/:empNum", (req, res) => {
                 res.status(404).send("Employee Not Found");
             } else {
 
-                res.render("employee", {data: viewData.data});
+                res.render("employee", {
+                    data: viewData.data
+                });
 
             }
         });
@@ -288,73 +296,66 @@ app.post("/department/update", (req, res)=>{
 
 app.post("/employee/update", (req, res) => {
 
-    dataService.updateEmployee(req.body).then(()=>{
+    dataService.updateEmployee(req.body).then(() => {
         res.redirect("/employees");
-    }).catch((err)=>{
+    }).catch((err) => {
         res.status(404).send("Employee cant be upd");
     });
 });
 
 
-
 app.post("/about/addComment", (req, res) => {
-    
-        console.log("Comment", req.body)
-    
-        dataServiceComments.addComment(req.body).then(() => {
-            res.redirect("/about");
-        }).catch((err) => {
-            console.log(err);
-        });
-    
+
+    console.log("Comment", req.body)
+
+    dataServiceComments.addComment(req.body).then(() => {
+        res.redirect("/about");
+    }).catch((err) => {
+        console.log(err);
     });
-    
-    app.post("/about/addReply", (req, res) => {
-        dataServiceComments.addReply(req.body).then(() => {
-            res.redirect("/about");
-        }).catch((err) => {
-            console.log(err);
-        });
+
+});
+
+app.post("/about/addReply", (req, res) => {
+    dataServiceComments.addReply(req.body).then(() => {
+        res.redirect("/about");
+    }).catch((err) => {
+        console.log(err);
     });
+});
 
 app.get("/about", function(req, res) {
-    
-        dataServiceComments.getAllComments().then((dataFromPromise) => {
-    
-                res.render("about", {
-                    data: dataFromPromise
-                });
-            })
-            .catch((err) => {
-    
-                res.render("about");
-            })
-    })
+
+    dataServiceComments.getAllComments().then((dataFromPromise) => {
+
+            res.render("about", {
+                data: dataFromPromise
+            });
+        })
+        .catch((err) => {
+
+            res.render("about");
+        })
+})
 // dataService.initialize().then( (resolve) => {
-   
+
 //     app.listen(HTTP_PORT, function() {
 //         console.log('listening on...', HTTP_PORT );
 //     });
 
 // });
 
-app.use((req, res)=>{
-    res.status(404).send("Page Not Found");
-});
-
 dataService.initialize()
-.then(dataServiceComments.initialize())
+    .then(dataServiceComments.initialize())
 
-.then(() => {
+    .then(() => {
 
-    app.listen(HTTP_PORT, function() {
-        console.log('listening on...', HTTP_PORT);
+        app.listen(HTTP_PORT, function() {
+            console.log('listening on...', HTTP_PORT);
+        });
+
+    })
+    .catch((err) => {
+
+        console.log("unable to start dataService", err);
     });
-
-})
-.catch((err) => {
-
-    console.log("unable to start dataService", err);
-});
-
-
