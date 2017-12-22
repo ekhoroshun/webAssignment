@@ -23,7 +23,7 @@ var commentSchema = new Schema({
 
 
   //connect to db
-module.exports.initialize = () => {
+module.exports.initialize = function() {
     return new Promise(function (resolve, reject) {
     let db = mongoose.createConnection("mongodb://ekhoroshun:cite13ur@ds053778.mlab.com:53778/web322_a6");
     db.on('error', (err)=>{
@@ -55,18 +55,17 @@ resolve(newComment._id);
 
 //return all comments
 module.exports.getAllComments = () => {
-    return new Promise(function(resolve, reject){
-        Comment.find()
-        .sort({ postedDate : 1 })
-        .exec()
-        .then((comments)=>
-    {
-        resolve(comments);
-    }).catch( (err)=>{
-        reject(err);
+    return new Promise((resolve, reject)=>{
+        Comment.find({}).sort({
+            postedDate: 1                     
+        }).exec()
+        .then((data)=>{
+            resolve(data);
+        }).catch((err)=>{
+            reject('There was an error getting all the comments: ${err}');
+        });
     });
-    });
-}
+};
 
 module.exports.addReply = (data) => {
     return new Promise(function(resolve,reject){

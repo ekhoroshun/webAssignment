@@ -314,13 +314,19 @@ app.post("/about/addReply", (req, res)=>{
     });
 });
 
-app.get("/about", (req, res)=>{
-    dataServiceComments.getAllComments().then((commentData)=>{
-        res.render("about", {data: commentData});
-    }).catch(()=>{
-        res.render("about");
-    });
-});
+app.get("/about", function(req, res) {
+    
+        dataServiceComments.getAllComments().then((dataFromPromise) => {
+    
+                res.render("about", {
+                    data: dataFromPromise
+                });
+            })
+            .catch((err) => {
+    
+                res.render("about");
+            })
+    })
 // dataService.initialize().then( (resolve) => {
    
 //     app.listen(HTTP_PORT, function() {
@@ -335,12 +341,17 @@ app.use((req, res)=>{
 
 dataService.initialize()
 .then(dataServiceComments.initialize())
-.then(()=>{
-    app.listen(HTTP_PORT, () =>{
-        console.log("server listening on " + HTTP_PORT);
-    }); 
-}).catch((err)=>{
-    console.log("unable to start data_service");
+
+.then(() => {
+
+    app.listen(HTTP_PORT, function() {
+        console.log('listening on...', HTTP_PORT);
+    });
+
+})
+.catch((err) => {
+
+    console.log("unable to start dataService", err);
 });
 
 
