@@ -1,10 +1,10 @@
 /*********************************************************************************
- * WEB322 – Assignment 05
+ * WEB322 – Assignment 06
  * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part of this
  * assignment has been copied manually or electronically from any other source (including web sites) or
  * distributed to other students.
  *
- * Name: Elena Khoroshun Student ID: 101908168 Date: 08/12/2017
+ * Name: Elena Khoroshun Student ID: 101908168 Date: 22/12/2017
  *
  * Online (Heroku) Link: https://lit-retreat-28570.herokuapp.com/
  *
