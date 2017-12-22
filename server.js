@@ -296,23 +296,26 @@ app.post("/employee/update", (req, res) => {
 });
 
 
-app.post("/about/addComment", (req, res)=>{
-    dataServiceComments.addComment(req.body).then(()=>{
-        res.redirect("/about");
-    }).catch((err)=>{
-        console.log("Fail to add comment: " + err);
-        res.redirect("/about");
-    });
-});
 
-app.post("/about/addReply", (req, res)=>{
-    dataServiceComments.addReply(req.body).then(()=>{
-        res.redirect("/about");
-    }).catch((err)=>{
-        console.log("Fail to reply to comment: " + err);
-        res.redirect("/about");
+app.post("/about/addComment", (req, res) => {
+    
+        console.log("Comment", req.body)
+    
+        dataServiceComments.addComment(req.body).then(() => {
+            res.redirect("/about");
+        }).catch((err) => {
+            console.log(err);
+        });
+    
     });
-});
+    
+    app.post("/about/addReply", (req, res) => {
+        dataServiceComments.addReply(req.body).then(() => {
+            res.redirect("/about");
+        }).catch((err) => {
+            console.log(err);
+        });
+    });
 
 app.get("/about", function(req, res) {
     
