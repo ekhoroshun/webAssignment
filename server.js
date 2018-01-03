@@ -21,6 +21,9 @@ const Sequelize = require("sequelize");
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 var HTTP_PORT = process.env.PORT || 8080;
+var clientSessions = require("client-sessions");
+var dataServiceAuth = require("./data-service-auth.js");
+
 
 app.use(express.static('public'));
 
@@ -46,6 +49,35 @@ app.engine(".hbs", exphbs({
 
 app.set("view engine", ".hbs");
 
+// Setup client-sessions
+app.use(clientSessions({
+    cookieName: "session", // this is the object name that will be added to 'req'
+    secret: "week10_web322", // this should be a long un-guessable string.
+    duration: 2 * 60 * 1000, // duration of the session in milliseconds (2 minutes)
+    activeDuration: 1000 * 60 // the session will be extended by this many ms each request (1 minute)
+  }));
+
+// to ensure that all of your
+//templates will have access to a "session" object (ie: {{session.user}} for example) - we will need this to
+//conditionally hide/show elements to the user depending on whether they're currently logged in
+
+app.use(function(req, res, next) {
+    res.locals.session = req.session;
+    next();
+   });
+
+// This is a helper middleware function that checks if a user is logged in
+// we can use it in any route that we want to protect against unauthenticated access.
+// A more advanced version of this would include checks for authorization as well after
+// checking if the user is authenticated
+function ensureLogin(req, res, next) {
+    if (!req.session.user) {
+      res.redirect("/login");
+    } else {
+      next();
+    }
+  }
+
 app.get('/', function(req, res) {
     // res.sendFile(path.join(__dirname + '/views/home.hbs'));
     res.render("home");
@@ -58,7 +90,7 @@ app.get('/about', function(req, res) {
 });
 */
 
-app.get('/employees', function(req, res) {
+app.get('/employees', ensureLogin, function(req, res) {
 
     if (req.query.status) {
 
@@ -131,7 +163,7 @@ app.get('/employees', function(req, res) {
 
 });
 
-app.get('/managers', function(req, res) {
+app.get('/managers', ensureLogin, function(req, res) {
 
     dataService.getAllManagers().then((resolve) => {
         //res.send(resolve);
@@ -149,7 +181,7 @@ app.get('/managers', function(req, res) {
 
 });
 
-app.get('/employee/', function(req, res) {
+app.get('/employee/', ensureLogin, function(req, res) {
 
     dataService.getEmployeeByNum(req.param('id')).then((resolve) => {
         res.send(resolve);
@@ -183,11 +215,11 @@ app.get('/departments', function(req, res) {
 
 
 
-app.get("/departments/add", (req, res) => {
+app.get("/departments/add", ensureLogin, (req, res) => {
     res.render("addDepartment");
 }); //new
 
-app.post("/departments/add", (req, res) => {
+app.post("/departments/add", ensureLogin, (req, res) => {
     dataService.addDepartment(req.body).then(() => {
         res.redirect("/departments");
     }).catch((err) => {
@@ -195,7 +227,7 @@ app.post("/departments/add", (req, res) => {
     });
 }); //new
 
-app.post("/department/update", (req, res) => {
+app.post("/department/update", ensureLogin, (req, res) => {
     dataService.updateDepartment(req.body).then(() => {
         res.redirect("/departments");
     }).catch((err) => {
@@ -203,7 +235,7 @@ app.post("/department/update", (req, res) => {
     });
 });
 
-app.get("/department/:departmentId", (req, res) => {
+app.get("/department/:departmentId", ensureLogin, (req, res) => {
     dataService.getDepartmentById(req.params.departmentId).then((data) => {
         res.render("department", {
             data: data
@@ -215,7 +247,7 @@ app.get("/department/:departmentId", (req, res) => {
 
 //EMPLOYEES
 
-app.get("/employees/add", (req, res) => {
+app.get("/employees/add", ensureLogin, (req, res) => {
     dataService.getAllDepartments().then((data) => {
         res.render("addEmployee", {
             departments: data
@@ -227,7 +259,7 @@ app.get("/employees/add", (req, res) => {
     });
 });
 
-app.post("/employees/add", (req, res) => {
+app.post("/employees/add", ensureLogin, (req, res) => {
 
     dataService.addEmployee(req.body).then(() => {
         res.redirect("/employees");
@@ -236,7 +268,7 @@ app.post("/employees/add", (req, res) => {
 });
 
 
-app.get("/employee/delete/:empNum", (req, res) => {
+app.get("/employee/delete/:empNum", ensureLogin, (req, res) => {
     dataService.deleteEmployeeByNum(req.params.empNum).then(() => {
         res.redirect("/employees");
     }).catch((err) => {
@@ -245,7 +277,7 @@ app.get("/employee/delete/:empNum", (req, res) => {
 });
 
 
-app.get("/employee/:empNum", (req, res) => {
+app.get("/employee/:empNum",  ensureLogin,(req, res) => {
     // initialize an empty object to store the values
     let viewData = {};
     dataService.getEmployeeByNum(req.params.empNum)
@@ -294,7 +326,7 @@ app.post("/department/update", (req, res)=>{
 });
 */
 
-app.post("/employee/update", (req, res) => {
+app.post("/employee/update", ensureLogin, (req, res) => {
 
     dataService.updateEmployee(req.body).then(() => {
         res.redirect("/employees");
@@ -345,8 +377,52 @@ app.get("/about", function(req, res) {
 
 // });
 
+app.get("/login", function(req,res){
+    res.render("login");
+  });
+
+
+app.get("/register", function(req,res){
+    res.render("register");
+  });
+  
+
+app.post("/register", function(req,res){
+  
+    dataServiceAuth.registerUser(req.body).then( (dataFromPromise) =>
+    {
+      res.render("register", { successMessage: "User created" });
+    })
+    .catch( (err)=> {
+      res.render("register", { errorMessage: err, user: req.body.user });
+    });
+  });
+  
+ 
+  app.post("/login", function(req,res) {
+  
+    dataServiceAuth.checkUser(req.body).then(()=>
+    {
+      req.session.user = {
+        username: req.body.user
+      }; 
+      res.redirect('/employees'); 
+    })
+    .catch((err)=> {
+     
+      res.render("login", {errorMessage: err, user: req.body.user});
+    });
+  });
+  
+  // logout route
+  app.get("/logout", function(req,res) {
+    req.session.reset();
+    res.redirect("/");
+  });
+
 dataService.initialize()
     .then(dataServiceComments.initialize())
+    .then( dataServiceAuth.initialize() )// add dataServiceAuth.initialize to the chain here
 
     .then(() => {
 
